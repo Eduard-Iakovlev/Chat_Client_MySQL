@@ -1,0 +1,8 @@
+# ninja log v5
+38	6845	1703219679560720161	CMakeFiles/Chat_Cross_platform.dir/Hash.cpp.o	8e7aaaa5e35f1cac
+51	8862	1703219681540714298	CMakeFiles/Chat_Cross_platform.dir/Message.cpp.o	8fb1759106a44fed
+63	6889	1703219679612720006	CMakeFiles/Chat_Cross_platform.dir/User.cpp.o	5b6002866d4b3cd7
+0	14086	1703219686784698988	CMakeFiles/Chat_Cross_platform.dir/Chat_Cross_platform.cpp.o	a1491ca15896630b
+6889	12678	1703219685404702991	CMakeFiles/Chat_Cross_platform.dir/Get.cpp.o	b19ff27594886d3d
+16142	17693	1703219690412688569	Chat_Cross_platform	b41780f2de7bed45
+6846	16142	1703219688860693008	CMakeFiles/Chat_Cross_platform.dir/Chat.cpp.o	e86e822aab35d204
