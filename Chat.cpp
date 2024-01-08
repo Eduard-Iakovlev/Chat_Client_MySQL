@@ -159,10 +159,11 @@ void Chat::registration(int menu, bool* check_user) {
 			std::string login = inputPL.input();
 			std::cout << std::endl;
 			user.get_user_login(login);
-			exchange(login);
+			exchange(user.user_login());
 			if (message() == "false") {
 				user.clear_login();
 				inputPL.clear();
+				login.clear();
 				std::cout << "\n Данный логин занят, выберите другой: ";
 				check_login = false;
 			}
@@ -170,12 +171,10 @@ void Chat::registration(int menu, bool* check_user) {
 		} while (!check_login);
 		exchange(" логин активирован");
 		std::cout << message();
-		std::string password = inputPL.input();
-		exchange(password);
-		if (message() == "регистрация прошла успешно") {
-			user.get_user_password(password);
-		}
-		else {
+		std::string password = inputPL.input();		
+		user.get_user_password(password);
+		exchange(user.user_password());
+		if (message() != "регистрация прошла успешно") {
 			std::cout << " Ошибка регистрации\n";
 			close_socket();
 			exit(1);
@@ -335,6 +334,14 @@ void Chat::show_message_list() {
 		else if (_active_recipient_login == "ALL_USERS" && _active_recipient_login == i.login_recipient()) i.show_message();
 		
 	}
+}
+
+//----------------- Подготовка хеша к отправке --------------------------------------
+std::string Chat::hash_mess(std::string& pass){
+	std::size_t hashed = hash_fn(pass);
+	std::string hash;
+	hash = hashed;
+	return hash;
 }
 
 //----------------- Действие если пользователь один --------------------------------------

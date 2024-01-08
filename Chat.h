@@ -65,6 +65,7 @@ public:
 
 	void send_message();
 	void show_message_list();
+	std::string hash_mess(std::string& pass);
 
 	void one_user();
 	void no_users();
@@ -97,14 +98,11 @@ private:
 
 	const char _fsymbolLogPass = '0';
 	const char _lsymbolLogPass = '~';
+	const char _esc{ 27 };
 
 #ifdef _WIN32
 	const char _enter{ 13 };
-	const char _esc{ 27 };
 #else
 	const char _enter{ 10 };
-	const char _esc{ 27 };
 #endif // _WIN32
-
-
 };
