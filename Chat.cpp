@@ -174,10 +174,12 @@ void Chat::registration(int menu, bool* check_user) {
 		std::string password = inputPL.input();		
 		user.get_user_password(password);
 		exchange(user.user_password());
-		if (message() != "регистрация прошла успешно") {
-			std::cout << " Ошибка регистрации\n";
-			close_socket();
-			exit(1);
+		if (message() != " регистрация прошла успешно") {
+			std::cout << "\n Ошибка регистрации\n";
+			system_pause(2);
+			clean_console();
+			*check_user = false;
+			return;
 		}
 
 		_users.emplace(user.user_login(), user);
@@ -436,6 +438,7 @@ void Chat::chat_work(){
 			std::cout << message() << std::endl;
 			registration(_menu, &_check_user);
 			system_pause(2);
+			if(_check_user == false) continue;
 		}
 		exchange("запрос на вход");
 		// проверка кол-ва зарегистрированных
