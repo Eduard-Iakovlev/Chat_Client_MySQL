@@ -230,7 +230,7 @@ void Chat::showListUsers() {
 		counter++;
 		if (it->second.user_login() == _active_user_login) continue;
 		std::cout << counter << " - ";
-		if (it->second.user_login() == "ALL_USERS") it->second.showUserName();
+		if (it->second.user_login() == "ALL USERS") it->second.showUserName();
 		else it->second.showUser();
 		std::cout << "\n";
 	}
@@ -270,7 +270,7 @@ void Chat::get_recipient(int menu) {
 	Universal_Input<int> inputID('0', '9');
 	int counter = 0;
 
-	if (menu == 2) _active_recipient_login = "ALL_USERS";
+	if (menu == 2) _active_recipient_login = "ALL USERS";
 	else {
 		int id{ 0 };
 		do {
@@ -331,7 +331,7 @@ void Chat::send_message() {
 			_messages.push_back(messages);
 			clear_show_user();
 			std::cout << "\n Сообщение ";
-			if (_active_recipient_login == "ALL_USERS") std::cout << " в общий чат\n";
+			if (_active_recipient_login == "ALL USERS") std::cout << " в общий чат\n";
 			else {
 				std::cout << " для ";
 				_users.at(_active_recipient_login).showUserName();
@@ -350,12 +350,12 @@ void Chat::show_message_list() {
 	std::cout << "\n Беседа с \n";
 	_users.at(_active_recipient_login).showUser();
 	for (Message i : _messages) {
-		if (_active_user_login == i.login_sender() && _active_recipient_login == i.login_recipient() && _active_recipient_login != "ALL_USERS"
+		if (_active_user_login == i.login_sender() && _active_recipient_login == i.login_recipient() && _active_recipient_login != "ALL USERS"
 			|| _active_user_login == i.login_recipient() && _active_recipient_login == i.login_sender()) {
 
 			i.show_message();
 		}
-		else if (_active_recipient_login == "ALL_USERS" && _active_recipient_login == i.login_recipient()) i.show_message();
+		else if (_active_recipient_login == "ALL USERS" && _active_recipient_login == i.login_recipient()) i.show_message();
 		
 	}
 }
