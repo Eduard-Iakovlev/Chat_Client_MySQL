@@ -64,7 +64,37 @@ void Chat::transmitting(const std::string& mess) {
 	ssize_t bytes = write(_socket_file_descriptor, _message, sizeof(_message));
 }
 
+//---------------- Приём таблицф пользователей ------------------------------------------
+void Chat::receiving_table_users(){
+	User user;
+	while(true){
+		receiving_server();
+		if(message() == "end of transmitting")break;
+		user.get_user_login(message());
+		receiving_server();
+		user.get_user_name(message());			
+		_users.emplace(user.user_login(), user);
+	}
+}
 
+//---------------- Приём таблицы сообщений -----------------------------------------------
+void Chat::receiving_table_message(){
+	Message mess;
+	std::string sender, rec, name, mes; 
+	while(true){
+		receiving_server();
+		if(message() == "end of transmitting")break;
+		sender = message();
+		receiving_server();
+		name = message();
+		receiving_server();
+		rec = message();
+		receiving_server();
+		mes = message();
+		mess.create_message(mes, name, sender, rec);
+		_messages.push_back(mess);
+	}
+}
 
 
 //---------------- Приветствие ------------------------------------------------------------
@@ -136,10 +166,10 @@ void Chat::registration(int menu, bool* check_user) {
 			system_pause(2);
 			return;
 		}
-		clean_console();
-		get_user(user.user_login(), _users.at(user.user_login()).user_name());
+		clean_console();		
+		get_user(user.user_login(), message());
 		std::cout << "\n\n Вы вошли как:\n\n";
-		_users.at(_active_user_login).showUser();
+		show_activ_user();
 		*check_user = true;
 
 	}
@@ -174,31 +204,20 @@ void Chat::registration(int menu, bool* check_user) {
 		std::string password = inputPL.input();		
 		user.get_user_password(password);
 		exchange(user.user_password());
-		if (message() != " регистрация прошла успешно") {
+		if (message() != "reg ok") {
 			std::cout << "\n Ошибка регистрации\n";
 			system_pause(2);
 			clean_console();
 			*check_user = false;
 			return;
 		}
-
-		_users.emplace(user.user_login(), user);
 		get_user(user.user_login(), user.user_name());
 
 		clean_console();
 		std::cout << "\n\n Вы зарегистрированы как:\n\n";
-		_users.at(_active_user_login).showUser();
+		show_activ_user();
 		std::cout << std::endl;
 	}
-}
-
-//----------------- Регистрация общего чата ---------------------------------------
-void Chat::reg_all_user() {
-	User user;
-	user.get_user_login("ALL_USERS");
-	user.get_user_password("admin");
-	user.get_user_name("общий чат");
-	_users.emplace(user.user_login(), user);
 }
 
 //---------------- Вывод списка участников чата -----------------------------------
@@ -369,6 +388,10 @@ void Chat::clear_show_user()
 	_users.at(_active_user_login).showUser();
 }
 
+void Chat::show_activ_user(){
+	std::cout << " " << active_user_login() << " / " << active_user_name() << std::endl;
+}
+
 //----------------- Очистка консоли -------------------------------------------------------
 void Chat::clean_console(){
 #ifdef _WIN32
@@ -386,7 +409,6 @@ void Chat::system_pause(int second){
 
 //----------------- Основная функция работы чата -------------------------------------------
 void Chat::chat_work(){
-	reg_all_user();
 
 	socket_file();
 	server_address();
@@ -446,6 +468,8 @@ void Chat::chat_work(){
 			one_user();
 			continue;
 		}
+		receiving_table_users();
+		receiving_table_message();
 		//работа аккаунта
 		account_work();
 	}
@@ -475,8 +499,10 @@ void Chat::account_work(){
 			exchange("3");
 			std::cout << "\n\n      " << message() << std::endl;
 			out_user();
-			system_pause(2);
+			system_pause(2);			
 			clean_console();
+			_users.clear();
+			_messages.clear();
 			_discussion = false;
 			break;
 

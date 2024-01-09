@@ -34,6 +34,8 @@ public:
 	std::string message();// Перевод сообщения в стринг
 	void receiving_server(); // Прием данных
 	void transmitting(const std::string& mess); //отправка данных
+	void receiving_table_users(); // приём таблицы пользователей
+	void receiving_table_message(); // приём таблицы сообщений
 
 
 
@@ -47,7 +49,6 @@ public:
 	bool finding(std::string);
 	bool check_password(std::string, std::string);
 	void registration(int, bool*);
-	void reg_all_user();
 
 	void showListUsers();
 	std::string active_user_login();
@@ -71,6 +72,7 @@ public:
 	void no_users();
 
 	void clear_show_user();
+	void show_activ_user();
 	void clean_console();
 	void system_pause(int second);
 
