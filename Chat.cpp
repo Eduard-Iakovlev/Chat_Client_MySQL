@@ -269,31 +269,33 @@ void Chat::out_user() {
 void Chat::get_recipient(int menu) {
 	Universal_Input<int> inputID('0', '9');
 	int counter = 0;
-	std::string id_str;
 
 	if (menu == 2) _active_recipient_login = "ALL_USERS";
 	else {
 		int id{ 0 };
 		do {
 			id = inputID.input();
-			id_str = std::to_string(id);
-			exchange(id_str);
-			if (message() != " ID принят") {
-				std::cout << "\n" << message();
-				inputID.clear();
+			if( id < 1 || id > _users.size()){
+				 std::cout << " Не верный id \n";
+				 continue;
 			}
 			else break;
 
 		} while (true);
 		
-		std::map<std::string, User>::iterator it = _users.begin();
+		_active_recipient_login = login_recipient(id);
+	}
+}
+
+//------------- Возврал логина получателя ------------------------------------------
+std::string Chat::login_recipient(int id){
+	int counter = 0;
+	std::map<std::string, User>::iterator it = _users.begin();
 		for (; it != _users.end(); it++) {
 			counter++;
 			if (counter == id) break;
 		}
-
-		_active_recipient_login = it->second.user_login();
-	}
+	return it->second.user_login();
 }
 
 //------------- Определение количества пользователей --------------------------------
@@ -323,6 +325,7 @@ void Chat::send_message() {
 			while (mess.empty()) {
 				getline(std::cin, mess);
 			}
+			transmitting(_active_recipient_login);
 			exchange(mess);
 			messages.create_message(mess, _active_user_name, _active_user_login, _active_recipient_login);
 			_messages.push_back(messages);

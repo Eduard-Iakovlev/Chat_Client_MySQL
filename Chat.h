@@ -51,8 +51,8 @@ public:
 	void registration(int, bool*);
 
 	void showListUsers();
-	std::string active_user_login();
 
+	std::string active_user_login();
 	std::string active_user_name();
 	std::string active_recipient_login();
 
@@ -60,7 +60,7 @@ public:
 	void get_user(std::string, std::string);
 	void out_user();
 	void get_recipient(int);
-
+	std::string login_recipient(int id);
 
 	int sizeList();
 
